@@ -1,0 +1,4 @@
+{
+  "jql": "assignee = \"daniel.silva@sovos.com\" AND statusCategory != Done AND issuetype != Sub-task",
+  "fields": ["key", "summary", "status"]
+}

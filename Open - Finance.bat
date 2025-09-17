@@ -13,7 +13,7 @@ set /p OPEN_ACTIVO=Open ActivoBank? (y/n):
 if /i "%OPEN_ACTIVO%"=="y" start "" %CHROME_PATH% %PROFILE_DIR% "https://www.activobank.pt/pt/"
 
 set /p OPEN_BUDGET=Open BudgetBakers? (y/n): 
-if /i "%OPEN_BUDGET%"=="y" start "" %CHROME_PATH% %PROFILE_DIR% "https://web.budgetbakers.com/dashboard"
+if /i "%OPEN_BUDGET%"=="y" start "" %CHROME_PATH% %PROFILE_DIR% "https://web-new.budgetbakers.com/dashboard"
 
 set /p OPEN_TRADING=Open Trading212? (y/n): 
 if /i "%OPEN_TRADING%"=="y" start "" %CHROME_PATH% %PROFILE_DIR% "https://app.trading212.com/"

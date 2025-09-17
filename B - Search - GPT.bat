@@ -12,3 +12,4 @@ set "CHROME_PATH=C:\Program Files\Google\Chrome\Application\chrome.exe"
 
 start "" "%CHROME_PATH%" --profile-directory="Default" "https://chat.openai.com/?q=!ENCODED_PROMPT!"
 endlocal
+

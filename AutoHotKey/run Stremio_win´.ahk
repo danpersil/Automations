@@ -1,7 +1,8 @@
 ﻿#SingleInstance Force
 #´::
 
-Run, C:\Users\User01\AppData\Local\Programs\LNV\Stremio-4\stremio.exe
+Run, "C:\Users\User01\AppData\Local\Programs\LNV\Stremio-4\stremio.exe"
+
 Sleep, 100
 Run, DisplaySwitch.exe
 Sleep, 100
@@ -12,4 +13,9 @@ Send, {Esc}
 Sleep, 80
 
 Send, {F11}
+Sleep, 80
+
 Return
+
+
+
