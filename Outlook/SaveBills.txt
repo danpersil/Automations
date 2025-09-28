@@ -1,0 +1,51 @@
+Public Sub SaveBillsAttachments(Item As Outlook.MailItem)
+    Dim Atmt As Attachment
+    Dim SaveFolder As String
+    Dim FileName As String
+    Dim SafeSubject As String
+    Dim FilePath As String
+    
+    MsgBox "Macro triggered for email: " & Item.Subject ' Debug: macro started
+    
+    ' Determine folder based on subject keywords
+    If InStr(Item.Subject, "160802728911") > 0 Then
+        SaveFolder = "C:\Users\User01\Documents\MEGA\EDP\"
+  
+    ElseIf InStr(Item.Subject, "1277487") > 0 Then
+        SaveFolder = "C:\Users\User01\Documents\MEGA\SIMAS\"
+    Else
+        Exit Sub
+    End If
+    
+    ' Create folder if it doesn't exist
+    If Dir(SaveFolder, vbDirectory) = "" Then
+        MkDir SaveFolder
+    End If
+    
+    ' Sanitize subject to be filename-safe
+    SafeSubject = Item.Subject
+    SafeSubject = Replace(SafeSubject, "\", "-")
+    SafeSubject = Replace(SafeSubject, "/", "-")
+    SafeSubject = Replace(SafeSubject, ":", "-")
+    SafeSubject = Replace(SafeSubject, "*", "-")
+    SafeSubject = Replace(SafeSubject, "?", "-")
+    SafeSubject = Replace(SafeSubject, """", "'")
+    SafeSubject = Replace(SafeSubject, "<", "-")
+    SafeSubject = Replace(SafeSubject, ">", "-")
+    SafeSubject = Replace(SafeSubject, "|", "-")
+    
+    ' Loop through attachments
+    For Each Atmt In Item.Attachments
+        If LCase(Right(Atmt.FileName, 4)) = ".pdf" Then
+            ' Build file name: YYYY-MM-DD_subject.pdf
+            FileName = Format(Item.ReceivedTime, "yyyy-mm-dd") & "_" & SafeSubject & ".pdf"
+            FilePath = SaveFolder & FileName
+            
+            ' Save attachment
+            Atmt.SaveAsFile FilePath
+        Else
+            MsgBox "Skipped non-PDF attachment: " & Atmt.FileName ' Debug
+        End If
+    Next
+End Sub
+
