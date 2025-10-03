@@ -5,14 +5,15 @@ Public Sub SaveBillsAttachments(Item As Outlook.MailItem)
     Dim SafeSubject As String
     Dim FilePath As String
     
-    MsgBox "Macro triggered for email: " & Item.Subject ' Debug: macro started
+    MsgBox "Macro triggered for email: " & Item.Subject
     
     ' Determine folder based on subject keywords
     If InStr(Item.Subject, "160802728911") > 0 Then
         SaveFolder = "C:\Users\User01\Documents\MEGA\EDP\"
-  
     ElseIf InStr(Item.Subject, "1277487") > 0 Then
         SaveFolder = "C:\Users\User01\Documents\MEGA\SIMAS\"
+    ElseIf InStr(Item.Subject, "Fatura de pagamento App navegante") > 0 Then
+        SaveFolder = "C:\Users\User01\Documents\MEGA\Metropolitano\"
     Else
         Exit Sub
     End If
