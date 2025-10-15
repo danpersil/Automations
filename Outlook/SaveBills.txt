@@ -58,8 +58,8 @@ Public Sub SaveBillsAttachments(Item As Outlook.MailItem)
 
     ' ? Send a confirmation email to danielpersilva@gmail.com
     Set newMail = Application.CreateItem(olMailItem)
-    newMail.Subject = "PDFs saved successfully"
-    newMail.Body = "[AutoDelete] All PDF attachments from the email '" & Item.Subject & "' were saved successfully to:" & vbCrLf & SaveFolder
+    newMail.Subject = "[AutoDelete] PDFs saved successfully"
+    newMail.Body = "All PDF attachments from the email '" & Item.Subject & "' were saved successfully to:" & vbCrLf & SaveFolder
     newMail.To = "danielpersilva@gmail.com"
     newMail.Send
 
@@ -68,3 +68,4 @@ Public Sub SaveBillsAttachments(Item As Outlook.MailItem)
 
     MsgBox "All PDF attachments saved, confirmation sent, and original email deleted."
 End Sub
+
