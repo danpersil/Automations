@@ -49,16 +49,9 @@ Public Sub SaveBillsAttachments(Item As Outlook.MailItem)
         End If
     Next
 
-    ' Add [autodelete-1h] at the beginning of the subject
-    If InStr(Item.Subject, "[autodelete-1h]") = 0 Then
-        newSubject = "[autodelete-1h] " & Item.Subject
-        Item.Subject = newSubject
-        Item.Save
-    End If
-
     ' ? Send a confirmation email to danielpersilva@gmail.com
     Set newMail = Application.CreateItem(olMailItem)
-    newMail.Subject = "[AutoDelete] PDFs saved successfully"
+    newMail.Subject = "[AutoDelete/1h] PDFs saved successfully"
     newMail.Body = "All PDF attachments from the email '" & Item.Subject & "' were saved successfully to:" & vbCrLf & SaveFolder
     newMail.To = "danielpersilva@gmail.com"
     newMail.Send
@@ -68,4 +61,3 @@ Public Sub SaveBillsAttachments(Item As Outlook.MailItem)
 
     MsgBox "All PDF attachments saved, confirmation sent, and original email deleted."
 End Sub
-
