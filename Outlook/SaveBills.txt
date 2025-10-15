@@ -4,9 +4,12 @@ Public Sub SaveBillsAttachments(Item As Outlook.MailItem)
     Dim FileName As String
     Dim SafeSubject As String
     Dim FilePath As String
-    
+    Dim i As Integer
+    Dim newSubject As String
+    Dim newMail As Outlook.MailItem
+
     MsgBox "Macro triggered for email: " & Item.Subject
-    
+
     ' Determine folder based on subject keywords
     If InStr(Item.Subject, "160802728911") > 0 Then
         SaveFolder = "C:\Users\User01\Documents\MEGA\EDP\"
@@ -17,12 +20,12 @@ Public Sub SaveBillsAttachments(Item As Outlook.MailItem)
     Else
         Exit Sub
     End If
-    
+
     ' Create folder if it doesn't exist
     If Dir(SaveFolder, vbDirectory) = "" Then
         MkDir SaveFolder
     End If
-    
+
     ' Sanitize subject to be filename-safe
     SafeSubject = Item.Subject
     SafeSubject = Replace(SafeSubject, "\", "-")
@@ -34,19 +37,34 @@ Public Sub SaveBillsAttachments(Item As Outlook.MailItem)
     SafeSubject = Replace(SafeSubject, "<", "-")
     SafeSubject = Replace(SafeSubject, ">", "-")
     SafeSubject = Replace(SafeSubject, "|", "-")
-    
-    ' Loop through attachments
+
+    ' Save all PDF attachments with unique names
+    i = 1
     For Each Atmt In Item.Attachments
         If LCase(Right(Atmt.FileName, 4)) = ".pdf" Then
-            ' Build file name: YYYY-MM-DD_subject.pdf
-            FileName = Format(Item.ReceivedTime, "yyyy-mm-dd") & "_" & SafeSubject & ".pdf"
+            FileName = Format(Item.ReceivedTime, "mmyyyy") & i & ".pdf"
             FilePath = SaveFolder & FileName
-            
-            ' Save attachment
             Atmt.SaveAsFile FilePath
-        Else
-            MsgBox "Skipped non-PDF attachment: " & Atmt.FileName ' Debug
+            i = i + 1
         End If
     Next
-End Sub
 
+    ' Add [autodelete-1h] at the beginning of the subject
+    If InStr(Item.Subject, "[autodelete-1h]") = 0 Then
+        newSubject = "[autodelete-1h] " & Item.Subject
+        Item.Subject = newSubject
+        Item.Save
+    End If
+
+    ' ? Send a confirmation email to danielpersilva@gmail.com
+    Set newMail = Application.CreateItem(olMailItem)
+    newMail.Subject = "PDFs saved successfully"
+    newMail.Body = "[AutoDelete] All PDF attachments from the email '" & Item.Subject & "' were saved successfully to:" & vbCrLf & SaveFolder
+    newMail.To = "danielpersilva@gmail.com"
+    newMail.Send
+
+    ' Delete the original email
+    Item.Delete
+
+    MsgBox "All PDF attachments saved, confirmation sent, and original email deleted."
+End Sub
